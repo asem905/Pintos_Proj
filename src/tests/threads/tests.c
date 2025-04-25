@@ -2,6 +2,7 @@
 #include <debug.h>
 #include <string.h>
 #include <stdio.h>
+#include <threads/thread.h>
 
 struct test 
   {
@@ -47,6 +48,10 @@ void
 run_test (const char *name) 
 {
   const struct test *t;
+
+  /* Auto-enable MLFQS mode for MLFQS tests */
+  if (strncmp (name, "mlfqs", 5) == 0)
+    thread_mlfqs = true;
 
   for (t = tests; t < tests + sizeof tests / sizeof *tests; t++)
     if (!strcmp (name, t->name))
@@ -99,4 +104,3 @@ pass (void)
 {
   printf ("(%s) PASS\n", test_name);
 }
-
